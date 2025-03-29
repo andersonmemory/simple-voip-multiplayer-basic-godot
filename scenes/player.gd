@@ -10,7 +10,6 @@ func _enter_tree() -> void:
 	set_multiplayer_authority(str(name).to_int())
 
 func _ready():
-	
 	# Avoid player from colliding with itself when joining - teleporting randomly
 	collision_mask = 1  # Enable only environment at first
 	await get_tree().create_timer(0.1).timeout
