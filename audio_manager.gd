@@ -21,6 +21,7 @@ func setupAudio(id):
 		input.play()
 		index = AudioServer.get_bus_index("Record")
 		effect = AudioServer.get_bus_effect(index, 0)
+		#$AudioStreamPlayer3D.
 	playback = get_node(outputPath).get_stream_playback()
 
 func _process(delta):
@@ -53,6 +54,6 @@ func processVoice():
 func sendData(data : PackedFloat32Array):
 	receivedBuffer.append_array(data)
 
-func sendPositionData(data : PackedFloat32Array):
-	var position = global_position
-	rpc("receiveAudio", multiplayer.get_unique_id(), data, position)
+#func sendPositionData(data : PackedFloat32Array):
+	#var position = global_position
+	#rpc("receiveAudio", multiplayer.get_unique_id(), data, position)

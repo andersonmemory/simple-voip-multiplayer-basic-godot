@@ -21,6 +21,9 @@ func _ready():
 	$Head/Camera3D.current = true
 
 func _physics_process(_delta):
+	
+	print($AudioManager/AudioStreamPlayer3D.position)
+	
 	if not is_multiplayer_authority(): return
 	
 	var direction := Vector3.ZERO
