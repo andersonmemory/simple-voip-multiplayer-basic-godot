@@ -40,7 +40,7 @@ func processMic():
 			data[i] = value
 		if maxAmplitude < inputThreshold:
 			return
-		sendData(data)
+		sendData.rpc(data)
 
 func processVoice():
 	if receivedBuffer.size() <= 0:
