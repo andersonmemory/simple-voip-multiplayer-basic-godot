@@ -22,9 +22,13 @@ func _ready():
 
 func _physics_process(_delta):
 	
-	print($AudioManager/AudioStreamPlayer3D.position)
+	print($AudioManager/AudioStreamPlayer3D.global_position)
+	
 	
 	if not is_multiplayer_authority(): return
+	
+	# Make the audio follow the player
+	$AudioManager.global_position = global_position
 	
 	var direction := Vector3.ZERO
 	direction = direction_handler(direction)
