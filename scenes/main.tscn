@@ -8,8 +8,6 @@
 script = ExtResource("1_7gnh3")
 player_scene = ExtResource("2_sugp2")
 
-[node name="Players" type="Node" parent="."]
-
 [node name="Map" parent="." instance=ExtResource("1_26o2g")]
 
 [node name="Host" type="Button" parent="."]
@@ -40,7 +38,7 @@ offset_bottom = 103.0
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://cp5x42oc2yj0v")
-spawn_path = NodePath("../Players")
+spawn_path = NodePath("..")
 
 [connection signal="pressed" from="Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="Join" to="." method="_on_join_pressed"]
