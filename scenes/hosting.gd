@@ -4,10 +4,6 @@ var peer = ENetMultiplayerPeer.new()
 @export var player_scene: PackedScene
 var players = {}  # Store players by their unique ID
 
-@export var max_voice_distance : float = 10.0
-@export var position_update_interval : float = 0.1
-var last_position_update_time : float = 0.0
-''
 # Add player to the game
 func _add_player(id):
 	print("peer connected")
