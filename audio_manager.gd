@@ -21,7 +21,6 @@ func setupAudio(id):
 		input.play()
 		index = AudioServer.get_bus_index("Record")
 		effect = AudioServer.get_bus_effect(index, 0)
-		#$AudioStreamPlayer3D.
 	playback = get_node(outputPath).get_stream_playback()
 
 func _process(_delta):

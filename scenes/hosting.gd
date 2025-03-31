@@ -42,4 +42,3 @@ func _on_host_pressed():
 	multiplayer.multiplayer_peer = peer  # Set multiplayer peer to host server
 	multiplayer.peer_connected.connect(_add_player)
 	_add_player(multiplayer.get_unique_id())
-	
