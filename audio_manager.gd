@@ -25,14 +25,9 @@ func setupAudio(id):
 		
 	playback = get_node(outputPath).get_stream_playback()
 
-#func _process(_delta):
-	#if is_multiplayer_authority():
-		#if Input.is_action_just_pressed("toggle_mic"):
-			#can_talk = not can_talk
-			#print(can_talk)
-		#if can_talk:
-			#processMic()
-	#processVoice()
+func _process(_delta):
+	if is_multiplayer_authority():
+		processMic()
 
 func processMic():
 	var stereoData : PackedVector2Array = effect.get_buffer(effect.get_frames_available())
@@ -51,11 +46,13 @@ func processMic():
 		print(data)
 
 func processVoice():
+	print(receivedBuffer)
 	if receivedBuffer.size() <= 0:
 		return
 	for i in range(min(playback.get_frames_available(), receivedBuffer.size())):
 		playback.push_frame(Vector2(receivedBuffer[0], receivedBuffer[0]))
 		receivedBuffer.remove_at(0)
+	print("hello")
 
 @rpc("any_peer", "call_remote", "unreliable_ordered")
 func sendData(data : PackedFloat32Array):

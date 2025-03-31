@@ -109,9 +109,9 @@ libraries = {
 replication_config = SubResource("SceneReplicationConfig_e0gvo")
 
 [node name="AudioManager" parent="." instance=ExtResource("2_g2els")]
-outputPath = NodePath("AudioStreamPlayer3D")
+outputPath = NodePath("input")
 
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="AudioManager"]
+[node name="input" type="AudioStreamPlayer3D" parent="AudioManager"]
 stream = SubResource("AudioStreamGenerator_g2els")
 max_distance = 10.0
 bus = &"Record"
