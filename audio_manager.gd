@@ -24,7 +24,7 @@ func setupAudio(id):
 		#$AudioStreamPlayer3D.
 	playback = get_node(outputPath).get_stream_playback()
 
-func _process(delta):
+func _process(_delta):
 	if is_multiplayer_authority():
 		processMic()
 	processVoice()
