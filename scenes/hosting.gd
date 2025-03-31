@@ -55,7 +55,6 @@ func _add_player(id):
 
 	player.get_node("AudioManager").setupAudio(multiplayer.get_unique_id())
 	players[id] = player
-	rpc("spawn_player", id)
 
 @rpc("any_peer")
 func spawn_player(id):
