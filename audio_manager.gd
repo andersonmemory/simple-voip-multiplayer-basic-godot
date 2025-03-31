@@ -8,25 +8,31 @@ var playback : AudioStreamGeneratorPlayback
 var inputThreshold = 0.006
 var receivedBuffer : PackedFloat32Array = PackedFloat32Array()
 @export var max_voice_distance : float = 10.0
+var can_talk : bool = false
 
 func _ready():
 	pass
 
 func setupAudio(id):
 	set_multiplayer_authority(id)
-	print(id)
+	#print(id)
 	input = $Input
 	if is_multiplayer_authority():
 		input.stream = AudioStreamMicrophone.new()
 		input.play()
 		index = AudioServer.get_bus_index("Record")
 		effect = AudioServer.get_bus_effect(index, 0)
+		
 	playback = get_node(outputPath).get_stream_playback()
 
-func _process(_delta):
-	if is_multiplayer_authority():
-		processMic()
-	processVoice()
+#func _process(_delta):
+	#if is_multiplayer_authority():
+		#if Input.is_action_just_pressed("toggle_mic"):
+			#can_talk = not can_talk
+			#print(can_talk)
+		#if can_talk:
+			#processMic()
+	#processVoice()
 
 func processMic():
 	var stereoData : PackedVector2Array = effect.get_buffer(effect.get_frames_available())
@@ -40,7 +46,9 @@ func processMic():
 			data[i] = value
 		if maxAmplitude < inputThreshold:
 			return
+			
 		sendData.rpc(data)
+		print(data)
 
 func processVoice():
 	if receivedBuffer.size() <= 0:
@@ -52,6 +60,7 @@ func processVoice():
 @rpc("any_peer", "call_remote", "unreliable_ordered")
 func sendData(data : PackedFloat32Array):
 	receivedBuffer.append_array(data)
+	print()
 
 #func sendPositionData(data : PackedFloat32Array):
 	#var position = global_position
