@@ -9,8 +9,8 @@ func _add_player(id):
 	print("peer connected")
 	var player = player_scene.instantiate()
 	player.name = str(id)
+	
 	add_child(player)
-
 	player.get_node("AudioManager").setupAudio(multiplayer.get_unique_id())
 	players[id] = player
 

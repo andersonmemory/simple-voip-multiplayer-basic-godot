@@ -15,7 +15,6 @@ func _ready():
 
 func setupAudio(id):
 	set_multiplayer_authority(id)
-	#print(id)
 	input = $Input
 	if is_multiplayer_authority():
 		input.stream = AudioStreamMicrophone.new()
@@ -28,8 +27,10 @@ func setupAudio(id):
 func _process(_delta):
 	if is_multiplayer_authority():
 		processMic()
+	processVoice()
 
 func processMic():
+	if effect == null: return
 	var stereoData : PackedVector2Array = effect.get_buffer(effect.get_frames_available())
 	if stereoData.size() > 0:
 		var data = PackedFloat32Array()
@@ -43,21 +44,18 @@ func processMic():
 			return
 			
 		sendData.rpc(data)
-		print(data)
 
 func processVoice():
-	print(receivedBuffer)
 	if receivedBuffer.size() <= 0:
 		return
+	if playback == null: return
 	for i in range(min(playback.get_frames_available(), receivedBuffer.size())):
 		playback.push_frame(Vector2(receivedBuffer[0], receivedBuffer[0]))
 		receivedBuffer.remove_at(0)
-	print("hello")
 
 @rpc("any_peer", "call_remote", "unreliable_ordered")
 func sendData(data : PackedFloat32Array):
 	receivedBuffer.append_array(data)
-	print()
 
 #func sendPositionData(data : PackedFloat32Array):
 	#var position = global_position

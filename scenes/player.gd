@@ -22,9 +22,6 @@ func _ready():
 
 func _physics_process(_delta):
 	
-	#print($AudioManager/AudioStreamPlayer3D.global_position)
-	
-	
 	if not is_multiplayer_authority(): return
 	
 	# Make the audio follow the player
