@@ -72,7 +72,6 @@ properties/3/spawn = true
 properties/3/replication_mode = 1
 
 [sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_g2els"]
-mix_rate = 48000.0
 buffer_length = 2.55
 
 [node name="Player" type="CharacterBody3D"]
@@ -113,6 +112,7 @@ outputPath = NodePath("Output")
 
 [node name="Output" type="AudioStreamPlayer3D" parent="AudioManager"]
 stream = SubResource("AudioStreamGenerator_g2els")
+autoplay = true
 max_distance = 10.0
-bus = &"Record"
+playback_type = 2
 doppler_tracking = 1

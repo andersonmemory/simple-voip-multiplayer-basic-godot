@@ -21,10 +21,17 @@ func setupAudio(id):
 		input.play()
 		index = AudioServer.get_bus_index("Record")
 		effect = AudioServer.get_bus_effect(index, 0)
-		
+	
+	$Output.play()
 	playback = get_node(outputPath).get_stream_playback()
+	
+	print(playback)
 
 func _process(_delta):
+	
+	if playback == null:
+		playback = get_node(outputPath).get_stream_playback()
+	
 	if is_multiplayer_authority():
 		processMic()
 	processVoice()
@@ -46,9 +53,14 @@ func processMic():
 		sendData.rpc(data)
 
 func processVoice():
+
 	if receivedBuffer.size() <= 0:
 		return
-	if playback == null: return
+		
+	if playback == null:
+		print("null")
+		return
+	
 	for i in range(min(playback.get_frames_available(), receivedBuffer.size())):
 		playback.push_frame(Vector2(receivedBuffer[0], receivedBuffer[0]))
 		receivedBuffer.remove_at(0)
