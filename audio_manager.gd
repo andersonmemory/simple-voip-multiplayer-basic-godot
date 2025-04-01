@@ -68,7 +68,3 @@ func processVoice():
 @rpc("any_peer", "call_remote", "unreliable_ordered")
 func sendData(data : PackedFloat32Array):
 	receivedBuffer.append_array(data)
-
-#func sendPositionData(data : PackedFloat32Array):
-	#var position = global_position
-	#rpc("receiveAudio", multiplayer.get_unique_id(), data, position)

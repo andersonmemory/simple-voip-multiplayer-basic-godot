@@ -72,7 +72,7 @@ properties/3/spawn = true
 properties/3/replication_mode = 1
 
 [sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_g2els"]
-buffer_length = 2.55
+buffer_length = 10.0
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
