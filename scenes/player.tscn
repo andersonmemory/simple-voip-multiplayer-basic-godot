@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://cp5x42oc2yj0v"]
+[gd_scene load_steps=14 format=3 uid="uid://cp5x42oc2yj0v"]
 
 [ext_resource type="Script" uid="uid://cvgavcr6rumqg" path="res://scenes/player.gd" id="1_33yup"]
 [ext_resource type="PackedScene" uid="uid://dfao55i7a2fsh" path="res://scenes/AudioManager.tscn" id="2_g2els"]
+[ext_resource type="PackedScene" uid="uid://fvf4ohje736q" path="res://scenes/radio.tscn" id="3_qhqgy"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_saoub"]
 
@@ -116,3 +117,6 @@ autoplay = true
 max_distance = 10.0
 playback_type = 2
 doppler_tracking = 1
+
+[node name="Radio" parent="." instance=ExtResource("3_qhqgy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.573568, 0.952999, 0.0108818)
