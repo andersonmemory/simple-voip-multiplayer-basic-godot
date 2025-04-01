@@ -22,7 +22,7 @@ func setupAudio(id):
 		index = AudioServer.get_bus_index("Record")
 		effect = AudioServer.get_bus_effect(index, 0)
 	
-	$Output.play()
+	
 	playback = get_node(outputPath).get_stream_playback()
 	
 	print(playback)
@@ -31,7 +31,7 @@ func _process(_delta):
 	
 	if playback == null:
 		playback = get_node(outputPath).get_stream_playback()
-	
+		
 	if is_multiplayer_authority():
 		processMic()
 	processVoice()
