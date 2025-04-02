@@ -7,9 +7,6 @@ var screen_paused = false
 var speed := 5
 var inventory = []
 
-# Radio 1 and radio 2 locationn
-@onready var radio1 = get_node("../Radio1")
-@onready var radio2 = get_node("../Radio2") 
 @export var radioPath : NodePath
 
 func _enter_tree() -> void:
@@ -45,6 +42,7 @@ func _physics_process(_delta):
 	
 	# If player is grabbing radio, then, update radio's position
 	if inventory:
+		$AudioManager.radio_connected = true
 		if Input.is_action_pressed("grab_radio"):
 			inventory[0].global_position.z = $Head/ItemPos.global_position.z
 			inventory[0].global_position.x = $Head/ItemPos.global_position.x
@@ -76,15 +74,20 @@ func update_radio_pos(radio_number):
 			
 			inventory[0].global_position.z = $Head/ItemPos.global_position.z
 			inventory[0].global_position.x = $Head/ItemPos.global_position.x
+			
+			$AudioManager.radio_connected = true
 		"2":
 			get_node(radioPath).global_position = get_node("../Radio1").global_position
 			get_node(radioPath).visible = true
 			
 			inventory[0].global_position.z = $Head/ItemPos.global_position.z
 			inventory[0].global_position.x = $Head/ItemPos.global_position.x
+			
+			$AudioManager.radio_connected = true
 		"remove":
 			get_node(radioPath).global_position = Vector3(0, 0, 0)
 			get_node(radioPath).visible = false
+			$AudioManager.radio_connected = false
 			
 			
 
@@ -95,7 +98,7 @@ func _unhandled_input(event):
 	if Input.is_action_just_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		screen_paused = true
-	
+		
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		screen_paused = false
@@ -127,12 +130,8 @@ func direction_handler(direction):
 
 func _on_radio_detector_area_entered(area: Area3D) -> void:
 	if area.is_in_group("radio"):
-		print("radio found! (%s) " % area.name)
 		inventory.append(area)
-		print(inventory)
 		
 func _on_radio_detector_area_exited(area: Area3D) -> void:
 	if area in inventory:
-		print("removed %s " % area.name)
 		inventory = []
-		print(inventory)

@@ -36,6 +36,11 @@ func _process(_delta):
 	
 	if radioPlayback == null:
 		radioPlayback = get_node(radiotPath).get_stream_playback()
+		
+	if Input.is_action_just_pressed("grab_radio"):
+		radio_connected = true
+	elif Input.is_action_just_released("grab_radio"):
+		radio_connected = false
 
 	if is_multiplayer_authority():
 		processMic()
@@ -63,18 +68,22 @@ func processVoice():
 		return
 		
 	if playback == null:
-		print("null")
 		return
 	
-	for i in range(min(playback.get_frames_available(), receivedBuffer.size())):
-		
-		# Player's microphone
-		playback.push_frame(Vector2(receivedBuffer[0], receivedBuffer[0]))
-		
-		# Radio's microphone
-		radioPlayback.push_frame(Vector2(receivedBuffer[0], receivedBuffer[0]))
-		
-		receivedBuffer.remove_at(0)
+	if radio_connected:
+		for i in range(min(playback.get_frames_available(), receivedBuffer.size())):
+			# Player's microphone
+			playback.push_frame(Vector2(receivedBuffer[0], receivedBuffer[0]))
+			
+			# Radio's microphone
+			radioPlayback.push_frame(Vector2(receivedBuffer[0], receivedBuffer[0]))
+			
+			receivedBuffer.remove_at(0)
+	else:
+		for i in range(min(playback.get_frames_available(), receivedBuffer.size())):
+			# Player's microphone
+			playback.push_frame(Vector2(receivedBuffer[0], receivedBuffer[0]))
+			receivedBuffer.remove_at(0)
 
 @rpc("any_peer", "call_remote", "unreliable_ordered")
 func sendData(data : PackedFloat32Array):
