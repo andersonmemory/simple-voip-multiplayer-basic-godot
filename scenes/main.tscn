@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dinvnrhenopub"]
+[gd_scene load_steps=5 format=3 uid="uid://dinvnrhenopub"]
 
 [ext_resource type="Script" uid="uid://bt8ahhahm6q8x" path="res://scenes/hosting.gd" id="1_7gnh3"]
 [ext_resource type="PackedScene" uid="uid://bvxemp1irq1wm" path="res://scenes/map.tscn" id="1_26o2g"]
 [ext_resource type="PackedScene" uid="uid://cp5x42oc2yj0v" path="res://scenes/player.tscn" id="2_sugp2"]
+[ext_resource type="PackedScene" uid="uid://fvf4ohje736q" path="res://scenes/radio.tscn" id="4_jyhfs"]
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_7gnh3")
@@ -37,8 +38,14 @@ offset_right = 177.0
 offset_bottom = 103.0
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://cp5x42oc2yj0v")
+_spawnable_scenes = PackedStringArray("uid://cp5x42oc2yj0v", "uid://fvf4ohje736q")
 spawn_path = NodePath("..")
+
+[node name="Radio2" parent="." instance=ExtResource("4_jyhfs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.6799, 0.762825, -12.1417)
+
+[node name="Radio1" parent="." instance=ExtResource("4_jyhfs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.762825, 12.7196)
 
 [connection signal="pressed" from="Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="Join" to="." method="_on_join_pressed"]

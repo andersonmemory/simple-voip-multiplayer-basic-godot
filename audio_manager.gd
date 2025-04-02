@@ -9,6 +9,9 @@ var inputThreshold = 0.006
 var receivedBuffer : PackedFloat32Array = PackedFloat32Array()
 @export var max_voice_distance : float = 10.0
 var can_talk : bool = false
+var radio_connected : bool = false
+var radioPlayback : AudioStreamGeneratorPlayback
+@export var radiotPath : NodePath
 
 func _ready():
 	pass
@@ -23,15 +26,17 @@ func setupAudio(id):
 		effect = AudioServer.get_bus_effect(index, 0)
 	
 	
-	playback = get_node(outputPath).get_stream_playback()
 	
-	print(playback)
+	playback = get_node(outputPath).get_stream_playback()
 
 func _process(_delta):
 	
 	if playback == null:
 		playback = get_node(outputPath).get_stream_playback()
-		
+	
+	if radioPlayback == null:
+		radioPlayback = get_node(radiotPath).get_stream_playback()
+
 	if is_multiplayer_authority():
 		processMic()
 	processVoice()
@@ -62,7 +67,13 @@ func processVoice():
 		return
 	
 	for i in range(min(playback.get_frames_available(), receivedBuffer.size())):
+		
+		# Player's microphone
 		playback.push_frame(Vector2(receivedBuffer[0], receivedBuffer[0]))
+		
+		# Radio's microphone
+		radioPlayback.push_frame(Vector2(receivedBuffer[0], receivedBuffer[0]))
+		
 		receivedBuffer.remove_at(0)
 
 @rpc("any_peer", "call_remote", "unreliable_ordered")

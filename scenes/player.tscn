@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://cvgavcr6rumqg" path="res://scenes/player.gd" id="1_33yup"]
 [ext_resource type="PackedScene" uid="uid://dfao55i7a2fsh" path="res://scenes/AudioManager.tscn" id="2_g2els"]
-[ext_resource type="PackedScene" uid="uid://fvf4ohje736q" path="res://scenes/radio.tscn" id="3_qhqgy"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_saoub"]
 
@@ -58,6 +57,12 @@ _data = {
 &"walk": SubResource("Animation_f7e1s")
 }
 
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_g2els"]
+buffer_length = 10.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_g2els"]
+radius = 2.81375
+
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_e0gvo"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
@@ -71,14 +76,15 @@ properties/2/replication_mode = 1
 properties/3/path = NodePath("Head:rotation")
 properties/3/spawn = true
 properties/3/replication_mode = 1
-
-[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_g2els"]
-buffer_length = 10.0
+properties/4/path = NodePath("AudioManager/radioOutput:visible")
+properties/4/spawn = true
+properties/4/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D"]
-collision_layer = 2
-collision_mask = 2
+collision_layer = 6
+collision_mask = 4
 script = ExtResource("1_33yup")
+radioPath = NodePath("AudioManager/radioOutput")
 
 [node name="Pivot" type="Node3D" parent="."]
 
@@ -100,16 +106,17 @@ skeleton = NodePath("../..")
 spot_range = 26.1283
 spot_angle = 26.4318
 
+[node name="ItemPos" type="Marker3D" parent="Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.222198, -0.927319)
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_ojxoa")
 }
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_e0gvo")
-
 [node name="AudioManager" parent="." instance=ExtResource("2_g2els")]
 outputPath = NodePath("Output")
+radiotPath = NodePath("radioOutput")
 
 [node name="Output" type="AudioStreamPlayer3D" parent="AudioManager"]
 stream = SubResource("AudioStreamGenerator_g2els")
@@ -118,5 +125,27 @@ max_distance = 10.0
 playback_type = 2
 doppler_tracking = 1
 
-[node name="Radio" parent="." instance=ExtResource("3_qhqgy")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.573568, 0.952999, 0.0108818)
+[node name="radioOutput" type="AudioStreamPlayer3D" parent="AudioManager"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.575403, -0.0440403)
+stream = SubResource("AudioStreamGenerator_g2els")
+autoplay = true
+max_distance = 10.0
+playback_type = 2
+doppler_tracking = 1
+
+[node name="OmniLight3D" type="OmniLight3D" parent="AudioManager/radioOutput"]
+light_color = Color(1, 0.249813, 0.485521, 1)
+
+[node name="RadioDetector" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.28923, 0)
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RadioDetector"]
+shape = SubResource("SphereShape3D_g2els")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_e0gvo")
+
+[connection signal="area_entered" from="RadioDetector" to="." method="_on_radio_detector_area_entered"]
+[connection signal="area_exited" from="RadioDetector" to="." method="_on_radio_detector_area_exited"]
